@@ -18,6 +18,8 @@ Start with [an introduction to our country](/about) and [our shared values](/val
 
 ## Join the conversation
 
+[Join our Discord server →](https://discord.gg/9TQ76stCZZ)
+
 Have a question, an idea, or an interest in connecting with Goodfellows Republic? Visit our [contact page](/contact).
 
 Please approach discussions with respect. Harassment, discrimination, and threats have no place in our community.
