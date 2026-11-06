@@ -1,7 +1,7 @@
 <script setup>
 const topics = [
   { number: '01', title: 'The Republic', description: 'An introduction to our country, its identity, and the flag that brings us together.', link: '/about', label: 'Discover the Republic' },
-  { number: '02', title: 'Our Constitution', description: 'The supreme law of the Republic. Read its preamble, 21 articles, and formal promulgation.', link: '/constitution', label: 'Read the Constitution' },
+  { number: '02', title: 'Our Constitution', description: 'The supreme law of the Republic. Read its preamble, articles, and formal promulgation.', link: '/constitution', label: 'Read the Constitution' },
   { number: '03', title: 'Civic life', description: 'A country is shaped by its people. Learn, exchange ideas, and join the conversation.', link: '/community', label: 'Take part' },
 ]
 </script>

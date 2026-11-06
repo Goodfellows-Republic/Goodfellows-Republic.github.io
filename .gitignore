@@ -24,3 +24,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Reading edition regenerated from the source PDF
+.vitepress/generated/

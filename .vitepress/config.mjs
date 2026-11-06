@@ -1,9 +1,13 @@
+import { generateConstitution, pdfPath } from '../scripts/constitution.mjs'
+
 import { createHash } from 'node:crypto'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { defineConfig } from 'vitepress'
 import tailwindcss from '@tailwindcss/vite'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
+
+await generateConstitution()
 
 const IMAGE_RE = /\.(png|jpe?g|gif|tiff|webp|avif|svg)$/i
 
@@ -113,6 +117,28 @@ export default defineConfig({
   ],
   vite: {
     plugins: [
+      {
+        name: 'constitution-from-pdf',
+        configureServer(server) {
+          let queue = Promise.resolve()
+          const regenerate = (path) => {
+            if (path !== pdfPath) return
+            queue = queue.then(() => generateConstitution()).then(() => {
+              server.ws.send({ type: 'full-reload' })
+            }).catch((error) => {
+              server.config.logger.error(`Constitution generation failed: ${error.message}`)
+              server.ws.send({ type: 'error', err: { message: error.message, stack: error.stack } })
+            })
+          }
+          server.watcher.add(pdfPath)
+          server.watcher.on('change', regenerate)
+          server.watcher.on('add', regenerate)
+          server.httpServer?.once('close', () => {
+            server.watcher.off('change', regenerate)
+            server.watcher.off('add', regenerate)
+          })
+        },
+      },
       tailwindcss(),
       // VitePress's theme CSS is unlayered, so it outranks every Tailwind
       // utility no matter the specificity: `.vp-doc a` (0-1-1) beats
@@ -191,7 +217,10 @@ export default defineConfig({
       { text: 'Civic life', link: '/community' },
       { text: 'Contact', link: '/contact' },
     ],
-    socialLinks: [{ icon: 'github', link: 'https://github.com/Goodfellows-Republic' }],
+    socialLinks: [
+      { icon: 'discord', link: 'https://discord.gg/9TQ76stCZZ' },
+      { icon: 'github', link: 'https://github.com/Goodfellows-Republic' },
+    ],
     search: { provider: 'local' },
     outline: { label: 'On this page', level: [2, 3] },
     docFooter: { prev: 'Previous', next: 'Next' },

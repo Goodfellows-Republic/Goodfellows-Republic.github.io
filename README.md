@@ -30,4 +30,16 @@ Home, About the Republic, Constitution, Our values, Civic life, Contact, Privacy
 
 Adapted from Chest Solutions' website, branch `arena/01a06261-chest-solutions-github-io`, commit `e5fb9d25ac6121d15ef428cf78c6fd346adb078d`. The original MIT license and copyright remain in `LICENSE`. The organization emblem is loaded from the Goodfellows Republic GitHub avatar.
 
-The constitution is transcribed from the supplied 27-page PDF, retained unchanged at `public/documents/constitution.pdf`. The privacy policy and terms cover both the website and Discord bot; bot records are retained indefinitely, with privacy requests handled through Discord tickets. These pages document the supplied operational policy; this repository does not contain or modify the bot implementation.
+The constitution is automatically extracted from `public/documents/constitution.pdf` during every build. The privacy policy and terms cover both the website and Discord bot; bot records are retained indefinitely, with privacy requests handled through Discord tickets. These pages document the supplied operational policy; this repository does not contain or modify the bot implementation.
+
+## Updating the constitution (no agent required)
+
+1. Replace **`public/documents/constitution.pdf`** with the new constitution, keeping that filename. Use a text-based PDF, or run OCR before uploading a scanned document.
+2. Commit the replacement to `main` (or merge a pull request containing it). The existing GitHub Pages workflow runs `npm run build`, which extracts the PDF and publishes the updated reading page and original PDF together.
+3. The page count, article contents, headings, and clauses come from the PDF; no manual Markdown editing is needed. A missing, invalid, or non-text page fails the build instead of publishing an empty reading edition. Extraction is not legal interpretation; the original PDF remains available for reference.
+
+Local development: `npm run dev` generates the reading edition on startup and watches the PDF for replacements. `npm run constitution:generate` regenerates it manually if needed. The generated include at `.vitepress/generated/constitution.md` is ignored by Git and recreated on clean builds. The fixed `constitution.md` wrapper should not be replaced.
+
+Run `npm test` for extraction and formatting tests. Node.js 22 is used by deployment. No Python, external API, or AI service is needed.
+
+Official Discord server: https://discord.gg/9TQ76stCZZ

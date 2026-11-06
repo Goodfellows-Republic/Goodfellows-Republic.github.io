@@ -6,6 +6,8 @@ sidebar: false
 
 # Contact
 
+[Join the Goodfellows Republic Discord server →](https://discord.gg/9TQ76stCZZ)
+
 ## Questions and support
 
 For questions about Goodfellows Republic, the website, or the Discord bot, **open a ticket through the Republic's Discord ticket system**. Use the ticket entry point available in the Republic's Discord community.
