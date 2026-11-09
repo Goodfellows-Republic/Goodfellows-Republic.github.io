@@ -5,10 +5,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/constitution.mjs && vite",
-    "build": "node scripts/constitution.mjs && tsc -b && vite build",
-    "constitution:generate": "node scripts/constitution.mjs",
-    "test": "node --test scripts/constitution.test.mjs",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "test": "node --test scripts/*.test.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },
@@ -16,6 +15,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "@tailwindcss/vite": "^4.3.5",
     "framer-motion": "^14.11.1",
+    "pdfjs-dist": "^6.5.438",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.5",
@@ -27,7 +27,6 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "oxlint": "^1.90.0",
-    "pdfjs-dist": "^5.4.624",
     "typescript": "~7.0.2",
     "vite": "^8.3.6"
   }

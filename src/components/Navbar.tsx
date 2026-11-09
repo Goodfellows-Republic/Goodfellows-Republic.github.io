@@ -2,6 +2,8 @@ import {
   DiscordLogo,
   GithubLogo,
   MagnifyingGlass,
+  Moon,
+  Sun,
 } from "@phosphor-icons/react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -22,6 +24,13 @@ const APPLE_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 export function Navbar() {
   const location = useLocation();
   const prefersReducedMotion = useReducedMotion();
+  const [darkMode, setDarkMode] = useState(() => document.documentElement.dataset.theme === "dark");
+  const toggleTheme = () => {
+    const next = !darkMode;
+    setDarkMode(next);
+    document.documentElement.dataset.theme = next ? "dark" : "light";
+    try { localStorage.setItem("theme", next ? "dark" : "light"); } catch { }
+  };
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -31,6 +40,12 @@ export function Navbar() {
 
   const isHome = location.pathname === "/";
   const heroLightMode = isHome && !scrolled && !mobileOpen;
+
+  const themeButton = (
+    <button type="button" onClick={toggleTheme} aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"} title={darkMode ? "Light mode" : "Dark mode"} className={`p-1.5 rounded-md cursor-pointer transition-colors duration-150 ${heroLightMode ? "text-white/85 hover:text-white" : "text-[var(--muted)] hover:text-[var(--ink)]"}`}>
+      {darkMode ? <Sun size={19} /> : <Moon size={19} />}
+    </button>
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -86,10 +101,10 @@ export function Navbar() {
           style={{ transformOrigin: "center top" }}
           className={`pointer-events-auto overflow-hidden transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 ${
             scrolled || mobileOpen
-              ? "bg-white/75 backdrop-blur-xl border border-black/[0.07] shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
+              ? "bg-[var(--nav-bg)] backdrop-blur-xl border border-[var(--line)] shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
               : isHome
               ? "bg-transparent border border-transparent"
-              : "bg-white/90 backdrop-blur-md border-b border-[var(--line)]"
+              : "bg-[var(--nav-bg)] backdrop-blur-md border-b border-[var(--line)]"
           }`}
         >
           <div
@@ -102,7 +117,7 @@ export function Navbar() {
             <Link
               to="/"
               className="inline-flex items-center gap-3 shrink-0"
-              aria-label="Goodfellows Republic — Home"
+              aria-label="Goodfellows Republic - Home"
             >
               <RepublicFlag
                 className={`w-[27px] h-[18px] rounded-[2px] shrink-0 ${
@@ -144,6 +159,7 @@ export function Navbar() {
               />
 
               <div className="flex items-center gap-3">
+                {themeButton}
                 <a
                   href={EXTERNAL_LINKS.discord}
                   target="_blank"
@@ -188,6 +204,7 @@ export function Navbar() {
             </div>
 
             <div className="flex md:hidden items-center gap-3">
+              {themeButton}
               <button
                 type="button"
                 onClick={() => setSearchOpen(true)}
@@ -222,7 +239,7 @@ export function Navbar() {
                   prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }
                 }
                 transition={{ duration: 0.18, ease: APPLE_EASE }}
-                className="md:hidden w-full border-t border-black/[0.06] px-6 py-4"
+                className="md:hidden w-full border-t border-[var(--line)] px-6 py-4"
               >
                 <nav
                   aria-label="Mobile navigation"
@@ -243,7 +260,7 @@ export function Navbar() {
                     );
                   })}
 
-                  <div className="mt-3 pt-3 border-t border-black/[0.06] flex items-center gap-5 text-[var(--muted)]">
+                  <div className="mt-3 pt-3 border-t border-[var(--line)] flex items-center gap-5 text-[var(--muted)]">
                     <a
                       href={EXTERNAL_LINKS.discord}
                       target="_blank"

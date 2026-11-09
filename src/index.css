@@ -12,9 +12,38 @@
   --body: #2c3530;
   --ink: #171e1a;
 
+  --nav-bg: rgba(255, 255, 255, 0.84);
   --focus: #718778;
 
   --font-sans: "Public Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --white: #121212;
+  --surface-soft: #1e1e1e;
+  --line: #333333;
+  --muted: #a0a0a0;
+  --body: #d4d4d4;
+  --ink: #ededed;
+  --theme: #737373;
+  --theme-hover: #525252;
+  --theme-text: #d4d4d4;
+  --nav-bg: rgba(20, 20, 20, 0.88);
+  --focus: #737373;
+}
+
+[data-theme="dark"] .btn-primary {
+  background-color: #525252;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  background-color: #404040;
+}
+
+[data-theme="dark"] .btn-subtle:hover {
+  background-color: #262626;
+  border-color: #525252;
 }
 
 @layer base {

@@ -2,7 +2,7 @@ import { ArrowRight, MagnifyingGlass, X } from "@phosphor-icons/react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CONSTITUTION_DOCUMENT } from "../generated/constitution";
+import { loadConstitution, type ConstitutionPageText } from "../lib/loadConstitution";
 
 interface SearchEntry {
   id: string;
@@ -38,9 +38,8 @@ const STATIC_ENTRIES: SearchEntry[] = [
   {
     id: "constitution",
     category: "Constitution",
-    title: CONSTITUTION_DOCUMENT.title,
+    title: "Constitution of the Goodfellows Republic",
     snippet:
-      CONSTITUTION_DOCUMENT.subtitleLines.join(" · ") ||
       "The supreme law of the Goodfellows Republic.",
     path: "/constitution",
   },
@@ -70,22 +69,6 @@ const STATIC_ENTRIES: SearchEntry[] = [
   },
 ];
 
-const CHAPTER_ENTRIES: SearchEntry[] = CONSTITUTION_DOCUMENT.chapters.map(
-  (ch) => ({
-    id: `const-${ch.id}`,
-    category: "Constitution",
-    title: ch.eyebrow ? `${ch.eyebrow} — ${ch.title}` : ch.title,
-    snippet:
-      ch.paragraphs[0] ||
-      ch.sections[0]?.paragraphs[0] ||
-      ch.sections[0]?.heading ||
-      "Constitutional provision.",
-    path: `/constitution#${ch.id}`,
-  })
-);
-
-const ALL_ENTRIES = [...STATIC_ENTRIES, ...CHAPTER_ENTRIES];
-
 interface SearchDialogProps {
   open: boolean;
   onClose: () => void;
@@ -93,9 +76,17 @@ interface SearchDialogProps {
 
 export function SearchDialog({ open, onClose }: SearchDialogProps) {
   const [query, setQuery] = useState("");
+  const [pdfPages, setPdfPages] = useState<ConstitutionPageText[] | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (!open || pdfPages) return;
+    let active = true;
+    loadConstitution().then((pages) => { if (active) setPdfPages(pages); }).catch(() => {});
+    return () => { active = false; };
+  }, [open, pdfPages]);
 
   useEffect(() => {
     if (open) {
@@ -116,13 +107,18 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return STATIC_ENTRIES.slice(0, 5);
-    return ALL_ENTRIES.filter(
+    const staticResults = STATIC_ENTRIES.filter(
       (entry) =>
         entry.title.toLowerCase().includes(q) ||
         entry.snippet.toLowerCase().includes(q) ||
         entry.category.toLowerCase().includes(q)
-    ).slice(0, 12);
-  }, [query]);
+    );
+    const pdfResults: SearchEntry[] = (pdfPages || []).flatMap((blocks, i) => {
+      const match = blocks.find((block) => block.text.toLowerCase().includes(q));
+      return match ? [{ id: `pdf-${i}`, category: "Constitution", title: `Constitution, page ${i + 1}`, snippet: match.text, path: `/constitution#page-${i + 1}` }] : [];
+    });
+    return [...staticResults, ...pdfResults].slice(0, 12);
+  }, [query, pdfPages]);
 
   return (
     <AnimatePresence>
@@ -150,7 +146,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 w-full max-w-[580px] bg-white rounded-xl border border-[var(--line)] overflow-hidden"
+            className="relative z-10 w-full max-w-[580px] bg-[var(--white)] rounded-xl border border-[var(--line)] overflow-hidden"
           >
             <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--line)]">
               <MagnifyingGlass

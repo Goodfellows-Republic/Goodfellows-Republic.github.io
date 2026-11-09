@@ -62,7 +62,7 @@ export default function App() {
   return (
     <BrowserRouter basename={routerBase}>
       <ScrollManager />
-      <div className="min-h-screen flex flex-col bg-white text-[var(--body)]">
+      <div className="min-h-screen flex flex-col bg-[var(--white)] text-[var(--body)]">
         <Navbar />
         <main id="main-content" className="flex-1">
           <AnimatedRoutes />

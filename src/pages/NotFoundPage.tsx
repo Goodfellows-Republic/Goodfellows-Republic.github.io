@@ -13,7 +13,7 @@ export function NotFoundPage() {
           <span>4</span>
           <span
             style={{
-              WebkitTextStroke: "0.065em #ffffff",
+              WebkitTextStroke: "0.065em var(--white)",
               paintOrder: "stroke fill",
             }}
             className="relative z-10 -mx-[0.075em]"

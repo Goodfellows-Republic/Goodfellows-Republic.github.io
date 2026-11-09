@@ -9,7 +9,7 @@ import { RepublicFlag } from "./MotionPrimitives";
 
 export function Footer() {
   return (
-    <footer className="bg-white border-t border-[var(--line)]">
+    <footer className="bg-[var(--white)] border-t border-[var(--line)]">
       <div className="portal-container py-12 md:py-14">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="space-y-2">
@@ -83,7 +83,6 @@ export function Footer() {
             <Copyright size={15} weight="regular" className="shrink-0" />
             <span>Goodfellows Republic 2026</span>
           </p>
-          <p>Created by redsnicker</p>
         </div>
       </div>
     </footer>

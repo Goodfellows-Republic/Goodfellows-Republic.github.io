@@ -40,6 +40,11 @@ export function HomePage() {
           aria-hidden="true"
         />
 
+        <div
+          className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[var(--white)] to-transparent pointer-events-none z-10"
+          aria-hidden="true"
+        />
+
         <div className="relative z-10 portal-container pt-24 pb-14 md:py-20">
           <div className="max-w-[540px]">
             <BlurFade inView={false} delay={0.05} yOffset={10} blur="10px">
