@@ -35,7 +35,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [viewportWidth, setViewportWidth] = useState<number>(() =>
-    typeof window !== "undefined" ? window.innerWidth : 1280
+    typeof document !== "undefined" ? document.documentElement.clientWidth : 1280
   );
 
   const isHome = location.pathname === "/";
@@ -48,8 +48,11 @@ export function Navbar() {
   );
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    const onResize = () => setViewportWidth(window.innerWidth);
+    const onScroll = () => {
+      const scrollY = window.scrollY;
+      setScrolled((wasScrolled) => wasScrolled ? scrollY > 12 : scrollY > 40);
+    };
+    const onResize = () => setViewportWidth(document.documentElement.clientWidth);
 
     onScroll();
     onResize();
@@ -67,6 +70,10 @@ export function Navbar() {
   }, [location.pathname, location.hash]);
 
   useEffect(() => {
+    if (viewportWidth >= 1024) setMobileOpen(false);
+  }, [viewportWidth]);
+
+  useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
@@ -78,8 +85,8 @@ export function Navbar() {
   }, []);
 
   const scrolledMaxWidth =
-    viewportWidth < 640
-      ? Math.max(viewportWidth - 28, 280)
+    viewportWidth < 1024
+      ? Math.max(viewportWidth - 28, 0)
       : Math.min(Math.round(viewportWidth * 0.86), 920);
   const targetWidth = scrolled ? scrolledMaxWidth : viewportWidth;
 
@@ -99,16 +106,16 @@ export function Navbar() {
               : { duration: 0.42, ease: APPLE_EASE }
           }
           style={{ transformOrigin: "center top" }}
-          className={`pointer-events-auto overflow-hidden transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 ${
+          className={`pointer-events-auto overflow-hidden transition-[background-color,border-color,box-shadow,backdrop-filter] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
             scrolled || mobileOpen
               ? "bg-[var(--nav-bg)] backdrop-blur-xl border border-[var(--line)] shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
               : isHome
               ? "bg-transparent border border-transparent"
-              : "bg-[var(--nav-bg)] backdrop-blur-md border-b border-[var(--line)]"
+              : "bg-[var(--nav-bg)] backdrop-blur-md border border-x-transparent border-t-transparent border-b-[var(--line)]"
           }`}
         >
           <div
-            className={`w-full max-w-[1140px] mx-auto flex items-center justify-between transition-[padding] duration-300 ${
+            className={`w-full max-w-[1140px] mx-auto flex items-center justify-between transition-[padding] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
               scrolled
                 ? "px-5 sm:px-6 py-3"
                 : "px-[clamp(22px,5vw,48px)] py-5"
@@ -129,11 +136,12 @@ export function Navbar() {
                   heroLightMode ? "text-white" : "text-[var(--ink)]"
                 }`}
               >
-                Goodfellows Republic
+                <span className="max-[420px]:hidden">Goodfellows Republic</span>
+                <span className="hidden max-[420px]:inline">Goodfellows</span>
               </span>
             </Link>
 
-            <div className="hidden md:flex items-center gap-7">
+            <div className="hidden lg:flex items-center gap-7">
               <nav
                 aria-label="Main navigation"
                 className="flex items-center gap-7"
@@ -203,7 +211,7 @@ export function Navbar() {
               </div>
             </div>
 
-            <div className="flex md:hidden items-center gap-3">
+            <div className="flex lg:hidden items-center gap-3">
               {themeButton}
               <button
                 type="button"
@@ -219,6 +227,7 @@ export function Navbar() {
                 type="button"
                 onClick={() => setMobileOpen((prev) => !prev)}
                 aria-expanded={mobileOpen}
+                aria-controls="mobile-navigation"
                 className={`text-[15px] font-medium py-1 cursor-pointer transition-colors duration-150 ${
                   heroLightMode ? "text-white" : "text-[var(--ink)]"
                 }`}
@@ -231,19 +240,16 @@ export function Navbar() {
           <AnimatePresence>
             {mobileOpen && (
               <motion.div
-                initial={
-                  prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: -6 }
-                }
-                animate={{ opacity: 1, y: 0 }}
-                exit={
-                  prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }
-                }
-                transition={{ duration: 0.18, ease: APPLE_EASE }}
-                className="md:hidden w-full border-t border-[var(--line)] px-6 py-4"
+                id="mobile-navigation"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.3, ease: APPLE_EASE }}
+                className="lg:hidden w-full overflow-hidden"
               >
                 <nav
                   aria-label="Mobile navigation"
-                  className="flex flex-col gap-1"
+                  className="flex flex-col gap-1 border-t border-[var(--line)] px-6 py-4"
                 >
                   {NAV_ITEMS.map((item) => {
                     const active = location.pathname.startsWith(item.path);
