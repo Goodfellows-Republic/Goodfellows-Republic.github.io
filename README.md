@@ -27,4 +27,4 @@ For a manual build hosted at another location, set `VITE_BASE_PATH` to the URL p
 VITE_BASE_PATH=/my-repository/ VITE_SITE_URL=https://example.github.io/my-repository/ npm run build
 ```
 
-The prebuilt archive uses `https://goodfellows-republic.github.io/` for its sharing image and `/` as its base path. Discord can cache previews, and the final preview layout is controlled by Discord.
+The prebuilt archive uses `https://goodfellows-republic.github.io/` for its sharing image and `/` as its base path. Discord can cache previews, and the final preview layout is controlled by Discord. The inline Discord component embed includes the flag, a forest-green accent, and links to the Constitution, Discord, and GitHub. The Open Graph tags remain available as a fallback. After deployment, use https://discord.com/developers/embeds to check the live preview.

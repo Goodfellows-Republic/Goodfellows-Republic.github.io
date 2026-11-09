@@ -45,7 +45,7 @@ export function HomePage() {
           aria-hidden="true"
         />
 
-        <div className="relative z-10 portal-container pt-24 pb-14 md:py-20">
+        <div className="relative z-10 portal-container pt-24 pb-36 md:py-20">
           <div className="max-w-[540px]">
             <BlurFade inView={false} delay={0.05} yOffset={10} blur="10px">
               <p className="text-[12.5px] font-medium uppercase tracking-[0.1em] text-white/80 mb-3.5">
