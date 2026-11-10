@@ -7,6 +7,7 @@ export function assetUrl(relativePath: string): string {
 
 export const EXTERNAL_LINKS = {
   email: "goodfellows.republic@gmail.com",
+  constitutionDrive: "https://docs.google.com/document/u/0/d/1xksbd3A6TKDv8uNsfZRbt93Xy0AqKi2fNXet3ZRJTio",
   discord: "https://discord.gg/9TQ76stCZZ",
   github: "https://github.com/Goodfellows-Republic",
   discordPrivacy: "https://discord.com/privacy",

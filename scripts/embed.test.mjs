@@ -15,6 +15,7 @@ test('Discord component preview has a flag, the right accent, and link buttons',
   assert.equal(section.accessory.media.url, 'https://example.github.io/test/brand/flag-share.png');
   const row = component.components.find((part) => part.type === 1);
   assert.equal(row.components.length, 3);
+  assert.equal(row.components.find((button) => button.label === "Constitution").url, "https://docs.google.com/document/u/0/d/1xksbd3A6TKDv8uNsfZRbt93Xy0AqKi2fNXet3ZRJTio");
   for (const button of row.components) {
     assert.equal(button.type, 2);
     assert.equal(button.style, 5);

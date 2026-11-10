@@ -1,7 +1,8 @@
-import { ArrowRight, DownloadSimple } from "@phosphor-icons/react";
+import { ArrowRight } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
+import { ConstitutionOptions } from "../components/ConstitutionOptions";
 import { BlurFade, RepublicFlag } from "../components/MotionPrimitives";
-import { assetUrl, NATIONAL_COLORS } from "../data/siteContent";
+import { NATIONAL_COLORS } from "../data/siteContent";
 
 export function AboutPage() {
   return (
@@ -78,15 +79,7 @@ export function AboutPage() {
               <span>Read the Constitution</span>
               <ArrowRight size={16} />
             </Link>
-            <a
-              href={assetUrl("documents/constitution.pdf")}
-              download="Constitution-of-the-Goodfellows-Republic.pdf"
-              aria-label="Download Constitution PDF"
-              title="Download PDF"
-              className="inline-flex items-center justify-center w-10 h-10 rounded-lg border border-[var(--line)] text-[var(--muted)] hover:text-[var(--ink)] hover:border-[var(--theme)] hover:bg-[var(--surface-soft)] transition-colors duration-150"
-            >
-              <DownloadSimple size={18} />
-            </a>
+            <ConstitutionOptions />
           </div>
         </BlurFade>
       </div>
