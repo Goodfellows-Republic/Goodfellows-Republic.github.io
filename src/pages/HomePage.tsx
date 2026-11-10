@@ -41,7 +41,7 @@ export function HomePage() {
         />
 
         <div
-          className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[var(--white)] to-transparent pointer-events-none z-10"
+          className="absolute inset-x-0 bottom-0 hero-fade bg-gradient-to-t from-[var(--white)] to-transparent pointer-events-none z-10"
           aria-hidden="true"
         />
 

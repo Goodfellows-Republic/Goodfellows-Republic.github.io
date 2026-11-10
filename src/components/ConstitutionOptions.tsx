@@ -1,4 +1,5 @@
-import { DownloadSimple, FilePdf, GoogleDriveLogo } from "@phosphor-icons/react";
+import { DownloadSimple, FilePdf } from "@phosphor-icons/react";
+import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useId, useRef, useState } from "react";
 import { assetUrl, EXTERNAL_LINKS } from "../data/siteContent";
 
@@ -12,6 +13,7 @@ export function ConstitutionOptions({ className = "" }: ConstitutionOptionsProps
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelId = useId();
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (!open) return;
@@ -57,9 +59,16 @@ export function ConstitutionOptions({ className = "" }: ConstitutionOptionsProps
       >
         <DownloadSimple size={18} weight="regular" />
       </button>
-      {open && (
-        <div
+      <motion.div
           id={panelId}
+          initial={false}
+          animate={open
+            ? { opacity: 1, y: 0, filter: "blur(0px)", visibility: "visible" }
+            : { opacity: 0, y: -6, filter: "blur(6px)", transitionEnd: { visibility: "hidden" } }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
+          style={{ pointerEvents: open ? "auto" : "none" }}
+          inert={!open}
+          aria-hidden={!open}
           className={`absolute top-full mt-2 ${align === "right" ? "right-0" : "left-0"} z-30 w-56 max-w-[calc(100vw-44px)] rounded-xl border border-[var(--line)] bg-[var(--white)] p-1.5 shadow-[0_12px_32px_rgba(0,0,0,0.12)]`}
         >
           <a
@@ -68,7 +77,7 @@ export function ConstitutionOptions({ className = "" }: ConstitutionOptionsProps
             onClick={() => setOpen(false)}
             className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] font-medium text-[var(--body)] hover:bg-[var(--surface-soft)] hover:text-[var(--ink)] transition-colors duration-150"
           >
-            <FilePdf size={19} className="shrink-0 text-[var(--muted)]" aria-hidden="true" />
+            <FilePdf size={19} className="shrink-0 text-[#dc5650]" aria-hidden="true" />
             <span>Download PDF</span>
           </a>
           <a
@@ -78,11 +87,14 @@ export function ConstitutionOptions({ className = "" }: ConstitutionOptionsProps
             onClick={() => setOpen(false)}
             className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] font-medium text-[var(--body)] hover:bg-[var(--surface-soft)] hover:text-[var(--ink)] transition-colors duration-150"
           >
-            <GoogleDriveLogo size={19} className="shrink-0 text-[var(--muted)]" aria-hidden="true" />
+            <svg width="19" height="19" viewBox="0 0 24 24" className="shrink-0" aria-hidden="true">
+              <path fill="#34a853" d="M8.5 5.5 12 11 5 22 2 17z" />
+              <path fill="#fbbc04" d="M8.5 5.5H15L22 17h-6.6z" />
+              <path fill="#4285f4" d="M8.7 17H22l-3 5H5z" />
+            </svg>
             <span>Open in Google Drive</span>
           </a>
-        </div>
-      )}
+      </motion.div>
     </div>
   );
 }
